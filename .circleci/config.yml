@@ -1,36 +1,17 @@
 version: 2.1
-executors:
-  node:
-    working_directory: ~/project
-    docker:
-      - image: circleci/node:10.12-browsers
+orbs:
+  node: circleci/node@1.1.6
 jobs:
-  build:
+  build-and-test:
     executor:
-      name: node
+      name: node/default
     steps:
       - checkout
-      - run:
-          name: update-npm
-          command: "sudo npm install -g npm@latest"
-      - restore_cache:
-          key: node-{{ .Branch }}-{{ checksum "package-lock.json" }}
-      - run:
-          name: npm install on ci
-          command: npm ci
-      - save_cache:
-          key: node-{{ .Branch }}-{{ checksum "package-lock.json" }}
-          paths:
-            - ./node_modules
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-      - run:
-          name: build flat
-          command: npm run build
+      - node/with-cache:
+          steps:
+            - run: npm install
+            - run: npm test
 workflows:
-  version: 2
-  build-and-cache:
-    jobs:
-      - build
+    build-and-test:
+      jobs:
+        - build-and-test
