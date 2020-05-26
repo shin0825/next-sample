@@ -45,7 +45,7 @@ jobs:
           at: .
       - run:
           name: deploy to now
-          command: vercel --token $NOW_TOKEN
+          command: vercel --confirm --token $NOW_TOKEN
 # ここまで追記
 workflows:
   version: 2
