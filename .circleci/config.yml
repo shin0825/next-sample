@@ -40,12 +40,12 @@ jobs:
           command: "sudo npm install -g npm@latest"
       - run:
           name: install now on global
-          command: "sudo npm install -g now"
+          command: "sudo npm install -g vercel"
       - attach_workspace:
           at: .
       - run:
           name: deploy to now
-          command: now deploy --token $NOW_TOKEN
+          command: vercel --token $NOW_TOKEN
 # ここまで追記
 workflows:
   version: 2
